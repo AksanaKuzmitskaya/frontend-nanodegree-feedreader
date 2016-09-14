@@ -54,7 +54,7 @@ $(function() {
   describe('The menu', function() {
     var body;
     beforeEach(function() {
-      body = document.getElementsByTagName('body');
+      body = $('body')[0];
     })
     /* Test ensures the menu element is
      * hidden by default. You'll have to analyze the HTML and
@@ -62,7 +62,7 @@ $(function() {
      * hiding/showing of the menu element.
      */
     it('is hidden by default', function() {
-      expect(body[0].classList[0]).toBe('menu-hidden');
+      expect(body.classList).toContain('menu-hidden');
     });
 
     /* Test ensures the menu changes
@@ -75,11 +75,11 @@ $(function() {
       // menu is initially hidden. after click it should be
       // visible
       menuIcon[0].click();
-      expect(body[0].classList.length).toBe(0);
+      expect(body.classList).not.toContain('menu-hidden');
       // menu is now visible, so after the next click it should
       // be hidden again
       menuIcon[0].click();
-      expect(body[0].classList[0]).toBe('menu-hidden');
+      expect(body.classList).toContain('menu-hidden');
     });
   });
 
@@ -92,15 +92,11 @@ $(function() {
      * the use of Jasmine's beforeEach and asynchronous done() function.
      */
     beforeEach(function(done) {
-      loadFeed(0, function() {
-        done();
-      });
+      loadFeed(0, done);
     });
 
-    it('has at least a single .entry element within the .feed container', function(done) {
-      var container = document.getElementsByClassName('feed')[0];
-      expect(container.childNodes.length).toBeGreaterThan(0);
-      done();
+    it('has at least a single .entry element within the .feed container', function() {
+      expect($('.feed .entry').length).toBeGreaterThan(0);
     });
   });
 
@@ -127,10 +123,9 @@ $(function() {
       // feeds. They are supposed to be different.
       loadFeed(1, function(){
         secondTitle = container.getElementsByTagName('h2')[0].innerText;
+        expect(firstTitle).not.toBe(secondTitle);
         done();
       });
-      expect(firstTitle).not.toBe(secondTitle);
-      done();
     });
   });
 
