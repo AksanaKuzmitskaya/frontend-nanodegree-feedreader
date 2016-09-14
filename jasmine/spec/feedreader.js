@@ -98,8 +98,8 @@ $(function() {
     });
 
     it('has at least a single .entry element within the .feed container', function(done) {
-      var container = $('.feed');
-      expect(container[0].childNodes.length).toBeGreaterThan(0);
+      var container = document.getElementsByClassName('feed')[0];
+      expect(container.childNodes.length).toBeGreaterThan(0);
       done();
     });
   });
@@ -107,28 +107,28 @@ $(function() {
   /* Test suite named "New Feed Selection" */
   describe('New Feed Selection', function() {
     var firstTitle,
-        secondTitle;
+        secondTitle,
+        container;
     /* Test ensures when a new feed is loaded
      * by the loadFeed function that the content actually changes.
      * Remember, loadFeed() is asynchronous.
      */
     beforeEach(function(done) {
-      var container = $('.feed');
+      container = document.getElementsByClassName('feed')[0];
       loadFeed(0, function(){
+        firstTitle = container.getElementsByTagName('h2')[0].innerText;
         done();
       });
-      firstTitle = container[0].getElementsByTagName('h2')[0].innerText;
-      loadFeed(1, function(){
-        done();
-      });
-      secondTitle = container[0].getElementsByTagName('h2')[0].innerText;
     });
 
     it('content changes when a new feed is loaded', function(done) {
+      loadFeed(1, function(){
+        secondTitle = container.getElementsByTagName('h2')[0].innerText;
+        done();
+      });
       expect(firstTitle).not.toBe(secondTitle);
       done();
     });
-
   });
 
 }());
