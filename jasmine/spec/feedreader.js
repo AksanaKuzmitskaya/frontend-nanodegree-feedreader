@@ -115,6 +115,7 @@ $(function() {
      */
     beforeEach(function(done) {
       container = document.getElementsByClassName('feed')[0];
+      // Before the test make sure to load the first feed
       loadFeed(0, function(){
         firstTitle = container.getElementsByTagName('h2')[0].innerText;
         done();
@@ -122,6 +123,8 @@ $(function() {
     });
 
     it('content changes when a new feed is loaded', function(done) {
+      // Load the second feed and compare the first items of both
+      // feeds. They are supposed to be different.
       loadFeed(1, function(){
         secondTitle = container.getElementsByTagName('h2')[0].innerText;
         done();
